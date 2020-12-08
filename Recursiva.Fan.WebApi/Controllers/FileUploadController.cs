@@ -17,7 +17,7 @@ namespace Recursiva.Fan.WebApi.Controllers
     [ApiController]
     public class UploadController : ControllerBase
     {
-        public string Post([FromForm] FileUpload fileUpload)
+        public IActionResult Post([FromForm] FileUpload fileUpload)
         {
             try
             {
@@ -27,26 +27,15 @@ namespace Recursiva.Fan.WebApi.Controllers
                     {
                         if (WriteFile(fileUpload.File))
                         {
-                            return "Uploaded.";
-                        }
-                        else
-                        {
-                            return "Write Error.";
+                            return StatusCode(StatusCodes.Status200OK);
                         }
                     }
-                    else
-                    {
-                        return "Bad Type.";
-                    }
                 }
-                else
-                {
-                    return "Not Uploaded.";
-                }
+                return StatusCode(StatusCodes.Status404NotFound);
             }
             catch (Exception)
             {
-                return "Error.";
+                return StatusCode(StatusCodes.Status404NotFound);
             }
         }
        

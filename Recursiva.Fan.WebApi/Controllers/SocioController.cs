@@ -37,7 +37,7 @@ namespace Recursiva.Fan.WebApi.Controllers
         public IActionResult GetSociosAverage(string team)
         {
             double average = _fanContext.Socios.Local.Where(x => x.Team.Contains(team)).Average(y => y.Age);
-            return Ok(average);
+            return Ok(Math.Round(average,2));
         }
 
         [HttpGet]
@@ -60,7 +60,7 @@ namespace Recursiva.Fan.WebApi.Controllers
         [Route("Teams")]
         public IActionResult GetTeamData()
         {
-            var teams = _fanContext.Socios.Local.GroupBy(x => x.Team).Select(g => new { Name = g.Key, Count = g.Count(), avgAge = g.Average(p => p.Age), maxAge = g.Max(p => p.Age), minAge = g.Min(p => p.Age) }).OrderByDescending(x => x.Count);
+            var teams = _fanContext.Socios.Local.GroupBy(x => x.Team).Select(g => new { Name = g.Key, Count = g.Count(), avgAge = Math.Round(g.Average(p => p.Age),2), maxAge = g.Max(p => p.Age), minAge = g.Min(p => p.Age) }).OrderByDescending(x => x.Count);
             return Ok(teams);
         }
 
